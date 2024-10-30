@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# SSH client configuration file
+Host *
+    # Use the specified private key for authentication
+    IdentityFile ~/.ssh/school
+    
+    # Disable password authentication
+    PasswordAuthentication no
+    
+    # Additional recommended security settings
+    PreferredAuthentications publickey
+    PubkeyAuthentication yes
