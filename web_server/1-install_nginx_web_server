@@ -1,19 +1,33 @@
 #!/usr/bin/env bash
-# Install and configure nginx on a new Ubuntu machine
+# Configures a new ubuntu machine by installing
+# Nginx where it should be listening on port 80
+# Serve a page that would return a Hello World s
+# Installing nginx on a server and configuring a simple server
 
-# Install nginx
-apt-get update
-apt-get install -y nginx
+# Updating packages
+sudo apt-get update -y && sudo apt-get upgrade -y
+sudo apt-get update -y && sudo apt-get upgrade -y
 
-# Start nginx service
-service nginx start
+# Installing nginx
+sudo apt-get install nginx -y
 
-# Create default page with required content
-echo "Holberton School" > /var/www/html/index.nginx-debian.html
+# Creating an index html file
+echo "Holberton School" | sudo tee /var/www/html/index.html
 
-# Configure nginx to listen on port 80
-sed -i 's/listen \[::\]:80 default_server;/listen 80 default_server;/' /etc/nginx/sites-available/default
-sed -i 's/listen 80 default_server;/listen 80 default_server;/' /etc/nginx/sites-available/default
+# Altering the server config to create a server
+echo "
+events {
 
-# Restart nginx without using systemctl
-service nginx restart
+}
+
+http {
+	server {
+		listen 80;
+		index index.html;
+		root /var/www/html;
+	}
+}
+"  | sudo tee /etc/nginx/nginx.conf
+
+# Restarting the server with the new config
+sudo service nginx restart
