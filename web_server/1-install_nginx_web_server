@@ -5,15 +5,21 @@
 apt-get update
 apt-get install -y nginx
 
+# Allow HTTP traffic
+ufw allow 'Nginx HTTP'
+
 # Create default page with required content
 echo "Holberton School for the win!" > /var/www/html/index.html
 
-# Configure nginx to listen on port 80
-# This is usually default, but let's ensure it
+# Configure nginx to listen on port 80 (if not already default)
 sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
+
+# Ensure proper permissions
+chown -R "$USER":"$USER" /var/www/html
+chmod -R 755 /var/www
 
 # Start nginx service
 service nginx start
 
-# Ensure nginx is running
+# Ensure nginx is running and restart to apply changes
 service nginx restart
