@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Install and configure nginx on a new Ubuntu machine
+
+# Install nginx
+apt-get update
+apt-get install -y nginx
+
+# Create default page with required content
+echo "Holberton School for the win!" > /var/www/html/index.html
+
+# Configure nginx to listen on port 80
+# This is usually default, but let's ensure it
+sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
+
+# Start nginx service
+service nginx start
+
+# Ensure nginx is running
+service nginx restart
