@@ -9,17 +9,22 @@ apt-get install -y nginx
 ufw allow 'Nginx HTTP'
 
 # Create default page with required content
-echo "Holberton School for the win!" > /var/www/html/index.html
+echo "Holberton School" > /var/www/html/index.html
 
-# Configure nginx to listen on port 80 (if not already default)
-sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
+# Configure nginx default site
+printf %s "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name _;
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}" > /etc/nginx/sites-available/default
 
-# Ensure proper permissions
-chown -R "$USER":"$USER" /var/www/html
-chmod -R 755 /var/www
+# Create symbolic link if not exists
+ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 
-# Start nginx service
-service nginx start
-
-# Ensure nginx is running and restart to apply changes
+# Ensure nginx is running
 service nginx restart
