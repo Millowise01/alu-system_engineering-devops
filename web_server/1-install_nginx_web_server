@@ -1,33 +1,9 @@
 #!/usr/bin/env bash
-# Configures a new ubuntu machine by installing
-# Nginx where it should be listening on port 80
-# Serve a page that would return a Hello World s
-# Installing nginx on a server and configuring a simple server
+# Installs nginx on local machine
+# Makes configurational changes to NginX on local machine
 
-# Updating packages
-sudo apt-get update -y && sudo apt-get upgrade -y
-sudo apt-get update -y && sudo apt-get upgrade -y
-
-# Installing nginx
-sudo apt-get install nginx -y
-
-# Creating an index html file
-echo "Holberton School" | sudo tee /var/www/html/index.html
-
-# Altering the server config to create a server
-echo "
-events {
-
-}
-
-http {
-	server {
-		listen 80;
-		index index.html;
-		root /var/www/html;
-	}
-}
-"  | sudo tee /etc/nginx/nginx.conf
-
-# Restarting the server with the new config
-sudo service nginx restart
+apt-get update -y && apt-get upgrade -y
+apt-get install nginx -y
+chown -R "$USER":"$USER" /var/www/html
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
+service nginx restart
