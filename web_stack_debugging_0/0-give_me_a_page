@@ -1,3 +1,8 @@
-#!/bin/bash
-# Start Apache web server
+#!/usr/bin/env bash
+# This script fixes Apache in the container and serves "Hello Holberton"
+
+# Start Apache
 service apache2 start
+
+# Create the "Hello Holberton" page
+echo "Hello Holberton" > /var/www/html/index.html
