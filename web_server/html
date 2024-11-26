@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oops! Page Not Found</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+        .astronaut {
+            animation: float 3s ease-in-out infinite;
+        }
+        .broken-link {
+            animation: shake 0.5s infinite;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="text-center p-8 rounded-lg bg-white shadow-2xl max-w-xl w-full">
+        <div class="mb-8 flex justify-center">
+            <svg class="astronaut w-64 h-64" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+                <!-- Astronaut Body -->
+                <path d="M250 300 L200 450 H300 Z" fill="#4A90E2"/>
+                <circle cx="250" cy="200" r="100" fill="#4A90E2"/>
+                
+                <!-- Helmet -->
+                <circle cx="250" cy="100" r="80" fill="#E6E6E6"/>
+                <circle cx="250" cy="100" r="60" fill="transparent" stroke="#4A90E2" stroke-width="4"/>
+                
+                <!-- Broken Link -->
+                <line x1="350" y1="50" x2="400" y2="100" stroke="#FF6B6B" stroke-width="8" class="broken-link"/>
+                <line x1="150" y1="50" x2="100" y2="100" stroke="#FF6B6B" stroke-width="8" class="broken-link"/>
+            </svg>
+        </div>
+        
+        <h1 class="text-4xl font-bold mb-4 text-gray-800">Ceci n'est pas une page</h1>
+        
+        <p class="text-xl text-gray-600 mb-6">
+            Looks like our spaceship got lost in the digital cosmos! 
+            The page you're searching for seems to have drifted into another dimension.
+        </p>
+        
+        <div class="space-x-4">
+            <a href="/" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-block transition duration-300">
+                Return to Mission Control
+            </a>
+            <a href="#" onclick="window.history.back()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-block transition duration-300">
+                Previous Page
+            </a>
+        </div>
+    </div>
+</body>
+</html>
