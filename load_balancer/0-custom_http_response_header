@@ -1,42 +1,30 @@
 #!/usr/bin/env bash
-# Script to configure Nginx with a custom X-Served-By HTTP header
-# Configures a new Ubuntu machine to add custom Nginx response header
-
-# Ensure the script is run with sudo privileges
-if [ "$(id -u)" != "0" ]; then
-   echo "This script must be run as root" 1>&2
-   exit 1
-fi
-
-# Update package lists and ensure Nginx is installed
-apt-get update
+#Updates the current state of the server
+#Installs Nginx on the server
+#Changes the user and user group ownership for editing file
+#overwrites the default page of nginx
+#overwrites the default configuration file default
+#add a redirection and a location for the redirection
+#restarts nginx
+apt-get -y update
 apt-get install -y nginx
-
-# Create a simple index.html if it doesn't exist
-if [ ! -f /var/www/html/index.html ]; then
-    echo "Hello World!" > /var/www/html/index.html
-fi
-
-# Configure Nginx to include custom header
-CONFIG_FILE="/etc/nginx/sites-available/default"
-
-# Backup the original configuration
-cp "$CONFIG_FILE" "${CONFIG_FILE}.bak"
-
-# Add the custom header to the Nginx configuration
-# This will add the header to both server and location blocks to ensure it's sent
-sed -i '/server_name _;/a \        add_header X-Served-By $hostname always;' "$CONFIG_FILE"
-
-# Test Nginx configuration
-if nginx -t; then
-    # Restart Nginx to apply changes
-    systemctl restart nginx
-    echo "Nginx configured with custom X-Served-By header: $(hostname)"
-else
-    echo "Nginx configuration test failed. Reverting changes."
-    mv "${CONFIG_FILE}.bak" "$CONFIG_FILE"
-    exit 1
-fi
-
-# Verify the header is working
-curl -sI localhost | grep "X-Served-By"
+sudo chown -R "$USER":"$USER" /var/www/html
+sudo chown -R "$USER":"$USER" /etc/nginx/sites-available/default
+echo "Holberton School for the win!" > /var/www/html/index.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+echo "server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	root /var/www/html;
+	index index.html index.htm 404.html index.nginx-debian.html;
+	server_name _;
+	add_header X-Served-By $HOSTNAME;
+	location /redirect_me {
+		return 301 https://www.youtube.com/watch?v=-VGIt10m9VQ;
+	}
+	error_page 404 /5-design_a_beautiful_404_page.html;
+}" > /etc/nginx/sites-available/default
+sudo chown -R root:root /var/www/html
+sudo chown -R root:root /etc/nginx/sites-available/default
+sudo service nginx restart
+sudo service nginx reload
